@@ -1,0 +1,49 @@
+8
+
+dir
+2811
+https://svn.xtvapps.com/svn/fcatrin/trunk/hnv/sisu/jquery-ui
+https://svn.xtvapps.com/svn/fcatrin
+
+
+
+2013-02-28T19:27:29.823302Z
+2774
+fcatrin
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+fb8f5c45-ab54-496a-8d9e-4c10816ea98d
+
+css
+dir
+
+development-bundle
+dir
+
+index.html
+file
+
+
+
+
+2013-03-02T18:13:43.000000Z
+8f37652fbc6943c004ed200630649e2e
+2013-02-28T19:27:29.823302Z
+2774
+fcatrin
+
+js
+dir
+

@@ -1,0 +1,9 @@
+<?php
+
+require_once '../funciones.global.inc.php';
+require_once '../funciones.inc.php';
+verifica_sesion(false);
+unset($_SESSION["reparts"]);
+$_SESSION["cod_repart"]=$_REQUEST["cod_lugar"];
+$results["estado"] = "1";
+?>

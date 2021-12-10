@@ -1,0 +1,76 @@
+<?php
+   include("../funciones.global.inc.php");
+   include("../funciones.inc.php");
+   $db=genera_adodb();
+   
+   if($_REQUEST["oper"] =="add"){ 
+     
+   $valores=array();
+   $sql="insert into usuario values(lower(?),upper(?),upper(?),upper(?),?,toolkit.encrypt(?),?,?,?) ";
+
+   $valores[]=$_REQUEST["email"] ;
+   $valores[]=$_REQUEST["nombres"] ;
+   $valores[]=$_REQUEST["apellido_paterno"] ;
+   $valores[]=$_REQUEST["apellido_materno"] ; 
+   $valores[]=$_REQUEST["tipo_usuario"] ;
+   $valores[]=$_REQUEST["clave"] ;
+   $valores[]=$_REQUEST["ind_auth"] ;
+   $valores[]=$_REQUEST["jefe_servicio"] ;
+   $valores[]=$_REQUEST["cod_servicio"] ;
+   $recordset = $db->Execute($sql,$valores);
+  if (!$recordset) {
+   $results["estado"] = "0";
+   $results["error"] =$db->ErrorMsg();
+  }  
+  else{
+   $results["estado"] = "1";
+  }
+    
+}
+elseif($_REQUEST["oper"] =="edit"){
+  
+   $valores=array();
+   $campos=array();
+   $sql="update usuario set email=?,nombres=upper(?),apellido_paterno=upper(?),apellido_materno=upper(?),tipo_usuario=?,clave=toolkit.encrypt(?),ind_auth=?,jefe_servicio=?,cod_servicio=?";
+$sql.= " where email=? ";
+   $valores[]=$_REQUEST["email"] ;
+   $valores[]=$_REQUEST["nombres"] ;
+   $valores[]=$_REQUEST["apellido_paterno"] ;
+   $valores[]=$_REQUEST["apellido_materno"] ; 
+   $valores[]=$_REQUEST["tipo_usuario"] ;
+   $valores[]=$_REQUEST["clave"] ;
+   $valores[]=$_REQUEST["ind_auth"] ;
+$valores[]=$_REQUEST["jefe_servicio"] ;
+$valores[]=$_REQUEST["cod_servicio"] ;
+$valores[]=$_REQUEST["id"] ;
+   
+   $recordset = $db->Execute($sql,$valores);
+  if (!$recordset) {
+   $results["estado"] = "0";
+   $results["error"] =count($campos)." ".$sql." ".$db->ErrorMsg();
+  }  
+  else{
+   $results["estado"] = "1";
+  }
+  
+} 
+elseif($_REQUEST["oper"] =="del"){
+
+   $valores=array();
+   $campos=array();
+   $sql="delete from usuario";
+$sql.= " where email=? ";
+   $valores[]=$_REQUEST["id"] ;
+   $recordset = $db->Execute($sql,$valores);
+  if (!$recordset) {
+   $results["estado"] = "0";
+   $results["error"] =count($campos)." ".$sql." ".$db->ErrorMsg();
+  }  
+  else{
+   $results["estado"] = "1";
+  }
+} 
+  
+  $db->disconnect();
+    echo json_encode($results);
+?>

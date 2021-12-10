@@ -1,0 +1,34 @@
+<?php
+
+
+$datos = array();
+	include("../funciones.global.inc.php");
+	include("../funciones.inc.php");
+	$db=genera_adodb();
+	$valores=array();
+      
+        $sql= " select
+                  u.email,u.nombres,u.apellido_paterno,u.apellido_materno,
+toolkit.decrypt(clave) as clave,decode(u.ind_auth,'1','Autenticacion LDAP','2','Autenticacion Propia') as ind_auth,decode(u.sn_admin,'N','No','S','Si') as admin
+                 from usuario u
+                 ";
+
+        $sql.=" order by 1 asc ";
+        $recordset = $db->Execute($sql,$valores);
+  if (!$recordset) die("hhh".$db->ErrorMsg());  
+ 
+while ($arr = $recordset->FetchRow()) {
+    foreach($arr as $k =>$v)
+      $arr[$k]=utf8_encode($v);
+
+
+     $datos[]=$arr;
+  } 
+$db->disconnect();  
+
+$result = array();
+$result["records"] = count($datos);
+$result["rows"] = $datos;
+
+echo json_encode($result);
+?>

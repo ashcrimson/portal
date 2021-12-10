@@ -1,0 +1,13 @@
+th , td{
+    text-align:;
+    
+}
+
+th{
+    background:#2A3F54;/*#46b8da*//*#2A3F54*/
+    color:white;
+    /*text-align:center;*/  
+}
+tr{
+    font-size:12px;
+}

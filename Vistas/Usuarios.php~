@@ -1,0 +1,123 @@
+<?php
+include("../funciones.global.inc.php");
+include("../funciones.inc.php");
+verifica_sesion(false);
+?>
+
+
+         
+
+
+ 
+
+
+
+<script type="text/javascript">
+        $( "#insu" ).button({icons: {primary: "ui-icon-plus"}});
+        $( "#updu" ).button({icons: {primary: "ui-icon-pencil"}});
+        $( "#delu" ).button({icons: {primary: "ui-icon-trash"}});
+	  var auths ="1:Autenticacion LDAP;2:Autenticacion Propia";
+          var admin ="N:No;S:Si";
+$(function(){ 
+    $("#list-usuarios").jqGrid({
+      url:'Servicios/getUsuarios.php',
+	  editurl:'Servicios/setUsuarios.php',
+	  width:1200,
+	  datatype: 'json', loadonce: false,height: 400,
+	  colNames:["Email","Nombres","Apellido Paterno","Apellido Materno",'Clave','Tipo Autenticacion','SN Administrador'
+		    ],
+	  colModel :[
+		     {name:'email', index:'email', width:50, align:'center',editable:true},
+		     {name:'nombres', index:'nombres', width:110, align:'center',editable:true},
+		     {name:'apellido_paterno', index:'apellido_paterno', width:110, align:'center',editable:true},
+		     {name:'apellido_materno', index:'apellido_materno', width:110, align:'center',editable:true},
+		     {name:'clave', index:'clave', width:95, align:'center',editable:true,hidden:true,edittype:"password",editrules:{ edithidden:true, required:true}},
+		     {name:'ind_auth', index:'ind_auth', width:50, align:'center',editable:true,edittype: "select",editoptions: { value: auths},editrules:{}},
+                     {name:'sn_admin', index:'sn_admin', width:50, align:'center',editable:true,edittype: "select",editoptions: { value: admin},editrules:{}}
+                     
+
+		     ],jsonReader: { repeatitems : false, id: "0" },
+	  rowNum:1000, rowList:[100,200,300], sortname: 'fecha', viewrecords: true, sortorder: "desc", caption:"Mantencion de Usuarios",
+
+          });
+}); 
+function addUsuario() {
+
+  $("#list-usuarios").jqGrid('editGridRow',"new",{
+    reloadAfterSubmit:true,
+				 closeAfterAdd:true,
+				 jqModal:false,
+				 width: 600,
+				 afterSubmit: function (response) {
+				 resp = JSON.parse(response.responseText);
+				 if (resp.estado ==0){
+
+				   return [false, resp.error, response.responseText];
+
+				 }
+				 else{
+				   return [true, '', response.responseText];
+				 }
+			       }
+    });
+
+}
+function editUsuario() {
+
+  var selected = jQuery("#list-usuarios").jqGrid('getGridParam','selrow');
+  if (selected == null) alert('Debe seleccionar una fila.');
+  if (selected != null){
+    $("#list-usuarios").jqGrid('editGridRow', selected,{viewPagerButtons: false,
+				   reloadAfterSubmit:true,
+				   closeAfterEdit:true,
+				   jqModal:false,
+				   width: 600,
+				   afterSubmit: function (response) {
+				   resp = JSON.parse(response.responseText);
+				   if (resp.estado ==0){
+
+				     return [false, resp.error, response.responseText];
+
+				   }
+				   else{
+				     return [true, '', response.responseText];
+				   }
+				 }
+			       });
+  }
+}
+function delUsuario() {
+
+  var selected = jQuery("#list-usuarios").jqGrid('getGridParam','selrow');
+  if (selected == null) alert('Debe seleccionar una fila.');
+  if (selected != null){
+    $("#list-usuarios").jqGrid('delGridRow', selected,{viewPagerButtons: false,
+				   reloadAfterSubmit:true,
+				   closeAfterEdit:true,
+				   jqModal:false,
+				   width: 600,
+				   afterSubmit: function (response) {
+				   resp = JSON.parse(response.responseText);
+				   if (resp.estado ==0){
+
+				     return [false, resp.error, response.responseText];
+
+				   }
+				   else{
+				     return [true, '', response.responseText];
+				   }
+				 }
+			       });
+  }
+}
+</script>
+ 
+</head>
+<body>
+<table id="list-usuarios"><tr><td/></tr></table> 
+<div id="pager-u"></div> 
+<button id="insu" class="boton" onclick="addUsuario();">Ingresar Usuario</button>
+<button id="updu" class="boton" onclick="editUsuario();">Modificar Usuario</button>
+<button id="delu" class="boton" onclick="delUsuario();">Eliminar Usuario</button> 
+</body>
+</html>

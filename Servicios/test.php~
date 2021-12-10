@@ -1,0 +1,21 @@
+<?php
+/*
+   Funcion Script : Inicio del Sistema 
+   Ultima Modificacion: 12/09/2011  
+*/
+   include_once("../libs/core.php");
+   include("../funciones.global.inc.php");
+   include("../funciones.inc.php");
+   verifica_sesion(false);
+   $db=genera_adodb();
+   
+
+       $valores=array();
+     $valores[]="A" ;
+     $sql="update tipo_lic set desc_tipo_lic=? where cod_tipo_lic=4";
+     $recordset = $db->Execute($sql,$valores);
+
+  
+  $db->disconnect();
+
+?>

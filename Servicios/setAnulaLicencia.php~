@@ -1,0 +1,31 @@
+<?php
+include_once("../libs/core.php");
+include("../funciones.global.inc.php");
+include("../funciones.inc.php");
+verifica_sesion(false);
+$db=genera_adodb();
+$nro_licencia=substr($_REQUEST["nro_licencia"],4,6);
+$cod_repart=substr($_REQUEST["nro_licencia"],0,4);
+$valores=array();
+$valores[]=$_REQUEST["motivo_anu"];
+$valores[]=$nro_licencia;
+$valores[]=$cod_repart;
+$sql="update licencia set motivo_anu=?,estado='A' where nro_licencia=? and cod_repart=? and ((cod_tipo_categoria='E6' and estado='D')or(cod_tipo_categoria <>'E6' and estado in ('F','D')) and cod_set_dp is null";
+$recordset = $db->Execute($sql,$valores);
+if($db->Affected_Rows() == 1){
+if (!$recordset) {
+  $results["estado"] = "0";
+  $results["mensaje"] =$db->ErrorMsg();
+ }
+ else{
+  $results["estado"] = "1";
+ }
+}
+else{
+  $results["estado"] = "0";
+  $results["mensaje"] ="No puede anular esta licencia.Esta licencia ha cumplido el plazo permitdo para su anulacion y ya fue informada a la DIRECPERS.";
+}
+$db->disconnect();
+echo json_encode($results);
+
+?>
